@@ -1,0 +1,37 @@
+function saveInformation() {
+    // 1. Capture inputs
+    const name = document.getElementById('farmerName').value;
+    const cropSelect = document.getElementById('cropType');
+    const cropName = cropSelect.options[cropSelect.selectedIndex].text.split(' (')[0];
+    const pricePerHectare = parseFloat(cropSelect.options[cropSelect.selectedIndex].getAttribute('data-price'));
+    const hectares = parseFloat(document.getElementById('hectares').value);
+
+    // 2. Simple Validation
+    if (!name || isNaN(hectares) || hectares <= 0) {
+        alert("Please fill in all fields correctly.");
+        return;
+    }
+
+    // 3. Calculations
+    const totalCropValue = hectares * pricePerHectare;
+    const insurancePremium = totalCropValue * 0.05; // 5% flat insurance rate
+
+    // 4. Create a new table row
+    const tableBody = document.getElementById('tableBody');
+    const row = document.createElement('tr');
+
+    row.innerHTML = `
+        <td>${name}</td>
+        <td>${cropName}</td>
+        <td>${hectares}</td>
+        <td>$${totalCropValue.toLocaleString()}</td>
+        <td><strong>$${insurancePremium.toLocaleString()}</strong></td>
+    `;
+
+    // 5. Add to table
+    tableBody.appendChild(row);
+
+    // 6. Clear inputs for next entry
+    document.getElementById('farmerName').value = '';
+    document.getElementById('hectares').value = '';
+}
